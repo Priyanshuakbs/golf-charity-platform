@@ -90,11 +90,35 @@ export default function Home() {
 
         .dl { height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,.08) 30%,rgba(74,222,128,.2) 50%,rgba(255,255,255,.08) 70%,transparent); }
 
-        @media(max-width:768px){
-          .g3,.g4 { grid-template-columns:1fr!important; }
-          .g2 { grid-template-columns:1fr!important; }
-          .hero-h { font-size:clamp(44px,12vw,72px)!important; }
+        /* Responsive grid classes */
+        .g2 { 
+          display: grid; 
+          grid-template-columns: 1fr;
+          gap: 24px; 
         }
+        @media (min-width: 768px) {
+          .g2 { grid-template-columns: 1fr 1fr; }
+        }
+
+        .g3 { 
+          display: grid; 
+          grid-template-columns: 1fr;
+          gap: 24px; 
+        }
+        @media (min-width: 640px) {
+          .g3 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) {
+          .g3 { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .g4 { 
+          display: grid; 
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 24px; 
+        }
+
+        .hero-h { font-size: clamp(44px, 10vw, 96px); }
       `}</style>
 
       {/* ══ HERO ══ */}
@@ -159,7 +183,7 @@ export default function Home() {
             <h2 className="hd" style={{ fontSize:'clamp(32px,5vw,52px)', fontWeight:700, letterSpacing:'-0.02em' }}>How GolfGives Works</h2>
           </div>
         </FadeIn>
-        <div className="g3" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:24 }}>
+        <div className="g3" style={{ gap:24 }}>
           {[
             {step:'01',icon:'🏌️',title:'Subscribe & Choose',desc:'Pick a plan, then select the charity you want to support from our verified UK partners.'},
             {step:'02',icon:'⛳',title:'Track Your Scores',desc:'Log your Stableford scores after each round. Your 5 latest scores become your draw numbers.'},
@@ -194,7 +218,7 @@ export default function Home() {
         </FadeIn>
 
         {loadingCharities ? (
-          <div className="g3" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
+          <div className="g3" style={{ gap:20 }}>
             {[1,2,3].map(i=><div key={i} style={{ height:180, background:'rgba(255,255,255,.03)', borderRadius:20, animation:'pglow 1.5s ease-in-out infinite' }} />)}
           </div>
         ) : charities.length === 0 ? (
@@ -202,7 +226,7 @@ export default function Home() {
             <p style={{ color:'rgba(255,255,255,.3)' }}>Charities coming soon!</p>
           </div>
         ) : (
-          <div className="g3" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
+          <div className="g3" style={{ gap:20 }}>
             {charities.slice(0, 6).map((c, i) => (
               <FadeIn key={c._id} delay={i*0.08}>
                 <Link to={`/charities/${c.slug ?? c._id}`} className="cc">
@@ -240,7 +264,7 @@ export default function Home() {
             <p className="hb" style={{ color:'rgba(255,255,255,.4)', fontSize:16, fontWeight:300 }}>No hidden fees. Cancel anytime. Every penny tracked.</p>
           </div>
         </FadeIn>
-        <div className="g2" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:24 }}>
+        <div className="g2" style={{ gap:24 }}>
           {[
             {name:'Monthly',price:'£9.99',period:'/month',save:null,feat:false},
             {name:'Yearly',price:'£99',period:'/year',save:'Save £20',feat:true}

@@ -4,6 +4,39 @@ import { getDraws } from '../utils/api';
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const FULL_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
+// Responsive styles for DrawResults
+const responsiveStyles = `
+  .draw-results-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  
+  @media (min-width: 1024px) {
+    .draw-results-grid {
+      grid-template-columns: 260px 1fr;
+    }
+  }
+  
+  .draw-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: sticky;
+    top: 100px;
+  }
+  
+  @media (max-width: 1023px) {
+    .draw-sidebar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 8px;
+      position: static;
+    }
+  }
+`;
+
 const TIER_CONFIG = {
   fiveMatch:  { label: '5 Match', sublabel: 'Jackpot', color: '#fbbf24', bg: 'rgba(251,191,36,.1)',  border: 'rgba(251,191,36,.25)', icon: '🏆' },
   fourMatch:  { label: '4 Match', sublabel: 'Tier 2',  color: '#4ade80', bg: 'rgba(74,222,128,.1)',  border: 'rgba(74,222,128,.25)',  icon: '🥈' },
@@ -20,7 +53,7 @@ function Ball({ number, size = 52, fontSize = 16 }) {
 
 function SkeletonDraw() {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: 24 }}>
+    <div className="draw-results-grid">
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {[1,2,3].map(i => <div key={i} style={{ height: 72, background: 'rgba(255,255,255,.04)', borderRadius: 14 }} />)}
       </div>
@@ -93,6 +126,7 @@ export default function DrawResults() {
 
   return (
     <main className="min-h-screen pt-28 pb-24" style={{ background: '#080808' }}>
+      <style>{responsiveStyles}</style>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -122,10 +156,10 @@ export default function DrawResults() {
         </div>
 
         {loading ? <SkeletonDraw /> : draws.length === 0 ? <EmptyState /> : (
-          <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: 24, alignItems: 'start' }}>
+          <div className="draw-results-grid">
 
             {/* Draw list sidebar */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, position: 'sticky', top: 100 }}>
+            <div className="draw-sidebar">
               <p style={{ fontSize: 11, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 700, marginBottom: 6 }}>Draw History</p>
               {draws.map((d) => {
                 const isActive = selected?._id === d._id;

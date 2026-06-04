@@ -4,6 +4,39 @@ import { getDashboard } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
+// Responsive styles
+const responsiveStyles = `
+  .dashboard-main-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  @media (min-width: 1024px) {
+    .dashboard-main-grid {
+      grid-template-columns: 1fr 320px;
+    }
+  }
+  
+  .dashboard-right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .dashboard-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  
+  @media (min-width: 640px) {
+    .dashboard-stats-grid {
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+  }
+`;
+
 const card = {
   background: 'rgba(255,255,255,.03)',
   border: '1px solid rgba(255,255,255,.07)',
@@ -113,6 +146,7 @@ export default function Dashboard() {
 
   return (
     <main className="min-h-screen pt-28 pb-24" style={{ background: '#080808' }}>
+      <style>{responsiveStyles}</style>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -137,7 +171,7 @@ export default function Dashboard() {
         )}
 
         {/* Stats row */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 24 }}>
+        <div className="dashboard-stats-grid">
           <StatCard icon="📋" label="Plan" value={isSubscribed ? (plan ?? 'Active') : 'Inactive'} color={isSubscribed ? '#4ade80' : 'rgba(255,255,255,.4)'} />
           <StatCard icon="🎯" label="Draws Entered" value={user?.drawsEntered ?? 0} color="#60a5fa" />
           <StatCard icon="💰" label="Total Winnings" value={`£${((user?.totalWinnings ?? 0) / 100).toFixed(2)}`} color="#fbbf24" />
@@ -145,7 +179,7 @@ export default function Dashboard() {
         </div>
 
         {/* Main grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 20 }}>
+        <div className="dashboard-main-grid">
 
           {/* Scores panel */}
           <div style={card}>
@@ -184,7 +218,7 @@ export default function Dashboard() {
           </div>
 
           {/* Right column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div className="dashboard-right-column">
 
             {/* Charity card */}
             <div style={card}>
